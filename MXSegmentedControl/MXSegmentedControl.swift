@@ -254,7 +254,18 @@ import UIKit
         }
         
         indicator.frame = frame
-        _scrollView.scrollRectToVisible(frame, animated: !frame.intersects(_scrollView.bounds))
+        
+        let offsetX = frame.midX - (_scrollView.frame.width / 2)
+        var newContentOffsetX = max(0, offsetX)
+        if newContentOffsetX + _scrollView.frame.width > _scrollView.contentSize.width {
+            newContentOffsetX = _scrollView.contentSize.width - _scrollView.frame.width
+        }
+        
+        _scrollView.setContentOffset(
+            CGPoint(x: newContentOffsetX, y: 0), animated: !frame.intersects(_scrollView.bounds)
+        )
+        
+//        _scrollView.scrollRectToVisible(frame, animated: !frame.intersects(_scrollView.bounds))
     }
     
     /// :nodoc:
